@@ -10,6 +10,39 @@ int loop = 1;
 
 void mainapp(){
     int entry; 
+    char quit;
+    while (true)
+    {
+        printf("\nHello what would you like to do ? \n");
+        printf(" 1:fun1\n 2:fun2\n 3:fun3\n 4:fun4\n 5:fun5\n 6:fun6\n 7:exit\n");
+        printf("Enter option: ");
+        scanf("%d",&entry);
+
+        switch (entry){
+        case 7:
+            printf("\nAre you sure you want to exit the Program");
+            scanf(" %c",&quit); //leave this space for scanf
+
+            printf("%c \n",quit);
+
+            if (quit == 'y'){
+                exit(0);
+            }
+            else if(quit == 'n'){
+                continue;
+            }
+            else{
+                printf("\ninvalid input try again \n");
+            }
+        
+        default:
+            printf("Invalid choice try again");
+            continue;        
+        }
+    }
+    
+}
+    int entry; 
     while (true)
     {
         printf("Hello what would you like to do ? \n");
@@ -54,12 +87,6 @@ void main(){
 
         printf("Enter password: ");
         scanf("%s", password);
-
-        //printf("%s \n",user);
-        //printf("%s \n",password);
-
-        //printf("%s \n",login[0]);
-        //printf("%s \n",login[1]);
 
         int user_check = strcmp(login[0],user);
         int pass_check = strcmp(login[1],password);
