@@ -1,9 +1,24 @@
 #include <stdio.h>
 #include<string.h>
 
+enum bool {false,true};
+
 char login[4][20]={"Manager","password","Clerk","password1"};
 int loginID = 1;
 int loop = 1;
+
+void mainapp(){
+    while (true)
+    {
+        printf("exit");
+        char exit;
+        scanf("%c",&exit);
+        if (exit == 'y'){
+            break;
+        }
+    }
+    
+}
 
 void main(){
     while (loop == 1){
@@ -39,25 +54,10 @@ void main(){
 
         switch(loginID){
             case 1:
-                    char exit ='';
-                    printf("exit y or n");
-                    scanf("&ch",exit);
-                    if (strcmp(exit,'y') == 0){
-                        break;
-                    }
-                    else{
-                        continue;
-                    }
+                    mainapp();
+                    
             case 0:
-                    char exit='';
-                    printf("exit y or n");
-                    scanf("&ch",exit);
-                    if (strcmp(exit,'y') == 0){
-                        break;
-                    }
-                    else{
-                        continue;
-                    }
+                    continue;
         }
 
     }
