@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-void main(){
+void datainput(){
 
 //R1: Storing item details
    struct date{

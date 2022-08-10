@@ -4,8 +4,11 @@
 #include "MangerView.c"
 #include "ClerkView.c"
 
+enum bool {false,true};
+
+
 char login[4][20]={"Manager","password","Clerk","password1"};
-int loginID = 1;
+int loginID = -1;
 int loop = 1;
 
 void main(){
@@ -27,9 +30,6 @@ void main(){
         //printf("%s \n",login[0]);
         //printf("%s \n",login[1]);
 
-        int user_check = strcmp(login[0],user);
-        int pass_check = strcmp(login[1],password);
-
         if(strcmp(login[0],user) == 0 && strcmp(login[1],password) == 0) {
             printf("Welcome Manager \n");
             loginID = 1;
@@ -43,10 +43,13 @@ void main(){
         switch(loginID){
             case 1:
                     printf("executing mainapp \n");
-                    mainapp();
+                    MangerMenu();
                     
             case 0:
-                    mainapp();
+                    ClerkMenu();
+            case -1:
+                printf("Wrong username/password combo try again \n");
+                
         }
 
     }

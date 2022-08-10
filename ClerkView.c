@@ -1,13 +1,13 @@
 #include <string.h>
 #include <stdlib.h>
 
-enum bool {false,true};
+//enum clerkbool {false,true};
 
 
-void mainapp(){
+void ClerkMenu(){
     int entry; 
     char quit;
-    while (true)
+    while (1)
     {
         printf("\nHello what would you like to do ? \n");
         printf(" 1:fun1\n 2:fun2\n 3:fun3\n 4:fun4\n 5:fun5\n 6:fun6\n 7:exit\n");
