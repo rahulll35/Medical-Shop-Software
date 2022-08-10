@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "MangerView.c"
-
+#include "ClerkView.c"
 
 char login[4][20]={"Manager","password","Clerk","password1"};
 int loginID = 1;
@@ -31,12 +31,12 @@ void main(){
         int pass_check = strcmp(login[1],password);
 
         if(strcmp(login[0],user) == 0 && strcmp(login[1],password) == 0) {
-            printf("Welcome manager \n");
+            printf("Welcome Manager \n");
             loginID = 1;
         }
 
         if(strcmp(login[2],user) == 0 && strcmp(login[3],password) == 0) {
-            printf("Welcome clerk \n");
+            printf("Welcome Clerk \n");
             loginID = 0;
         }
 
