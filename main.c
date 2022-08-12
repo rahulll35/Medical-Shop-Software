@@ -44,11 +44,15 @@ void main(){
             case 1:
                     printf("executing mainapp \n");
                     MangerMenu();
-                    
+                    break;
             case 0:
+
+            
                     ClerkMenu();
+                    break;
             case -1:
                 printf("Wrong username/password combo try again \n");
+                break;
                 
         }
 
