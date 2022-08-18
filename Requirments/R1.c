@@ -1,6 +1,5 @@
 #include<stdio.h>
 
-int o = 6;
 struct date{
       int day;
       int month;
@@ -53,6 +52,4 @@ void datainput(){
       printf("%d %-15s %-d %-5d %-5d%d/%d/%d%d%d%d\n",i+1,item[i].name,item[i].code,item[i].qty,item[i].price,item[i].mfg.day,item[i].mfg.month,item[i].mfg.year,item[i].exp.day,item[i].exp.month,item[i].exp.year);
    printf("------------------------------------------------------------------\n");
    getchar();
-
-   o =9;
 }
