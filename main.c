@@ -4,11 +4,6 @@
 
 enum bool {false,true};
 
-struct store_revenue{
-    int code;
-    int qty;
-};
-
 //structure for details
 struct details{
       char name[20];
