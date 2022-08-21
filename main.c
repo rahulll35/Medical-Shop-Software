@@ -4,198 +4,171 @@
 
 enum bool {false,true};
 
-struct recipt{
-    char name[40];
-    int price;
+struct store_revenue{
+    int code;
     int qty;
 };
 
-struct date{
-      int day;
-      int month;
-      int year;
-   };
+//structure for details
 struct details{
       char name[20];
-      int price;
+      float price;
       int code;
       int qty;
-      struct date mfg;
-      struct date exp;
-   };
+      char mfg[10];//22-01-2003
+      char exp[10];
+};
+
+struct recipt{
+    char name[40];
+    float price;
+    int qty;
+};
 
 typedef struct details Details;
 typedef struct recipt Recipt;
-Details item[50];
-Recipt bill[50];
-int no_of_items = 0;
-//linked list 
-struct Node {
+typedef struct store_revenue Store_revenue;
+
+Recipt bill[50]; //to store values in R6
+
+//test values
+Details items[50]={{"sfsd",123,1,23,"11-11-1111","11-11-1111"},
+                {"sfsd",123,2,23,"11-11-1111","11-11-1111"},
+                {"sfsd",123,3,23,"11-11-1111","11-11-1111"},
+                {"sfsd",123,4,23,"11-11-1111","11-11-1111"},
+                {"sfsd",123,5,23,"11-11-1111","11-11-1111"},
+                };
+
+Store_revenue daily_revenue[30];
+int no_of_items = 0; //stores no of items in inventory
+int no_of_sales = 0; //stores no of sales
+
+
+//defining Linked list funcions for item storage for R5 and R6
+struct node {
    char name[40];
-    int price;
+    float price;
     int qty;
     int code;
    struct node *next;
-}; 
+};
 
-typedef struct Node node;
+//defining head and currrent
+struct node *head = NULL;
+struct node *current = NULL;
 
-node *head = NULL;
-node* insertfirst(int code,char name[50],int price,int qty){
-    node* temp= (node*) malloc(sizeof(node));
-    
-    strcpy(temp -> name,name);
-    temp->price = price;
-    temp->qty=qty;
-    temp->code;
-
-    temp ->next=head;
-    temp = head;
-}
-
-void insertlast(int code,char name[50],int price,int qty){
-    node *temp = (node *) malloc(sizeof(node));
-
-    strcpy(temp -> name,name);
-    temp->price = price;
-    temp->qty=qty;
-    temp->code;
-
-    if (head == NULL)
+//display the list
+void display() {
+   printf("\n\n");
+   struct node *temp = head;
+   printf("Current bill \n\n");
+	if (head == NULL)
     {
-       head = temp;
-       temp  = NULL;
-       return; 
-    }
-
-    node *cur = head;
-
-    while (cur -> next != NULL)
-    {
-        cur = cur -> next;
-    }
-    cur -> next = temp;
-    temp = NULL;
-}
-
-void bill_delete(int code){
-
-    if (head == NULL)
-    {
-        printf("Empty list");
+        printf("Empty bill\n\n");
         return;
     }
-    
-    node* pre = NULL;
-    node* cur = head;
-    while (cur->code != code){   
-        pre = cur;
-        cur = cur->next;
-    }
-
-    if (pre == NULL){
-        printf("Element not found");
-        return;
-    }
-
-
-    node* temp = cur;
-    pre ->next = cur -> next;
-    temp ->next = NULL;
-    free(temp);
-}
-
-void display(){
-    if (head== NULL)
-    {
-        printf("Empty");
-        return;
-    }
-
-    node* temp = head;
-    while (temp->next != NULL)
-    {
-        printf("%d %s %d %d\n",temp->code,temp->name,temp->price,temp->qty);
+   //start from the beginning
+   while(temp != NULL) {
+      printf("%d %s %f %d\n",temp->code,temp->name,temp->price,temp->qty);
         temp = temp->next;
-    }
-
-    printf("%d %s %d %d\n",temp->code,temp->name,temp->price,temp->qty);
+   }
+	//printf("%d %s %d %d\n",temp->code,temp->name,temp->price,temp->qty);
+    printf("\n\n");
 }
-//end linkd list
 
+//insert link at the first location
+void insertFirst(int code,char name[50],float price,int qty) {
+   //create a link
+   struct node *link = (struct node*) malloc(sizeof(struct node));
+	
+   strcpy(link -> name,name);
+    link->price = price;
+    link->qty=qty;
+    link->code=code;
+	
+   //point it to old first node
+   link->next = head;
+	
+   //point first to new first node
+   head = link;
+}
+
+//delete a link with given key
+struct node* delete_item(int code) {
+
+   //start from the first link
+   struct node* current = head;
+   struct node* previous = NULL;
+	
+   //if list is empty
+   if(head == NULL) {
+      return NULL;
+   }
+
+   //navigate through list
+   while(current->code != code) {
+
+      //if it is last node
+      if(current->next == NULL) {
+         return NULL;
+      } else {
+         //store reference to current link
+         previous = current;
+         //move to next link
+         current = current->next;
+      }
+   }
+
+   //found a match, update the link
+   if(current == head) {
+      //change first to point to next link
+      head = head->next;
+   } else {
+      //bypass the current link
+      previous->next = current->next;
+   }    
+	
+   return current;
+}
+
+//linked list functions ends
+
+//function to get item index
 int get_item_index(int code,int lenght){
     for (int x=0;x<lenght;x++){
-        if (code == item[x].code){
+        if (code == items[x].code){
             return x;
         }
     }
+    return -2;
 }
 
-void gen_recipt(){
-    int choice=0,code,loop=1;
-    while (loop==1){
-        printf("1:Generate bill\n2:Delete from bill\n3:Display bill\n4:finalize bill\n5:Exit\n");
-        scanf("%d",&choice);
+//function protypes for R5 and R6
+void gen_recipt();
+void print_bill(int lenght,float total_cost);
+int finalize_bill();
 
-        switch (choice)
-        {
-        case 1:
-            enter_details();
-            display();
-            break;
-        case 2:
-            display();
-            printf("Enter code of item to delete");
-            scanf("%d",&code);
-            bill_delete(code);
-            display();
-            break;
-        case 3:
-            display();
-            break;
-        case 4:
-            finalize_bill();
-            break;
-        case 5:
-            loop=0;
-            break;
-        default:
-            printf("\nInvalid choice try again\n");
-            break;
-        }
-    }
-}
+//R7
+//R7  ends
 
-void enter_details(){
-    int code,flag=0,index=0;
+//defining variables for R5 and R6
+int item_index = 0;
+int lenght = 5;
+int no_of_items_in_bill = -1;
 
-    printf("Enter med code");
-    scanf("%d",&code);
-
-    if (flag == 0){
-        index=get_item_index(code,no_of_items);
-        insertfirst(item[index].code,item[index].name,item[index].price,item[index].qty);
-    }else{
-        index = get_item_index(code,no_of_items);
-        insertlast(item[index].code,item[index].name,item[index].price,item[index].qty);
-    }
-}
-
-void finalize_bill(){
-
-
+//defining variables for login  
 char login[4][20]={"Manager","password","Clerk","password1"};
 int loginID = -1;
 int loop = 1;
 
 
 //R1 - Inventory input
-void datainput(){
-    int n,i;
+/*void datainput(){
+    int n;
     printf("Enter number of items:");
     scanf("%d",&n);
     fflush(stdin);
-    for(i=no_of_items;i< no_of_items+n;i++){
+    for(int i=no_of_items;i< no_of_items+n;i++){
         fflush(stdin);
         printf("Item name:");
         scanf("%s",item[i].name);
@@ -220,12 +193,12 @@ void datainput(){
     printf("------------------------------------------------------------------\n");
     printf("S.N.| NAME | CODE | QUANTITY | PRICE | MFG.DATE | EXP.DATE |\n");
     printf("------------------------------------------------------------------\n");
-    for(i=0;i<no_of_items;i++)
+    for(int i=0;i<no_of_items;i++)
         printf("%d %-15s %-d %-5d %-5d%d/%d/%d%d%d%d\n",i+1,item[i].name,item[i].code,item[i].qty,item[i].price,item[i].mfg.day,item[i].mfg.month,item[i].mfg.year,item[i].exp.day,item[i].exp.month,item[i].exp.year);
     printf("------------------------------------------------------------------\n");
     getchar();
 }
-
+*/
 
 //Manager menu
 void MangerMenu(){
@@ -241,10 +214,10 @@ void MangerMenu(){
 
         switch (entry){
         case 1:
-            datainput();
+            //datainput();
             break;
         case 2:
-            printf("%d %-15s %-d %-5d %-5d%d/%d/%d%d%d%d\n",1,item[1].name,item[1].code,item[1].qty,item[1].price,item[1].mfg.day,item[1].mfg.month,item[1].mfg.year,item[1].exp.day,item[1].exp.month,item[1].exp.year);
+            
             break;
         case 6:
             printf("Logout ? y or n");
@@ -292,11 +265,14 @@ void ClerkMenu(){
     while (1)
     {
         printf("\nHello what would you like to do ? \n");
-        printf(" 1:fun1\n 2:fun2\n 3:fun3\n 4:fun4\n 5:fun5\n 6:fun6\n 7:exit\n");
+        printf(" 1:Create Bill\n 2:fun2\n 3:fun3\n 4:fun4\n 5:fun5\n 6:fun6\n 7:exit\n\n");
         printf("Enter option: ");
         scanf("%d",&entry);
 
         switch (entry){
+        case 1:
+                gen_recipt();
+                break;
         case 7:
             printf("\nAre you sure you want to exit the Program(y or n): ");
             scanf(" %c",&quit); //leave this space for scanf
@@ -363,3 +339,88 @@ void main(){
 
     }
 }
+
+
+//R5 and R6
+void gen_recipt(){
+    int choice=0,code,qty,loop=1,tmp;
+    while (loop==1){
+        printf("1:Enter item\n2:Delete from bill\n3:Display bill\n4:finalize bill\n5:Exit\n");
+        printf("Enter option: ");
+        scanf("%d",&choice);
+
+        switch (choice){
+        case 1:
+            printf("Enter code of item to enter: ");
+            scanf("%d",&code);
+            item_index = get_item_index(code,lenght);
+            if (item_index == -2){printf("Med Code not found try again\n");break;}
+            printf("Enter quantity: ");
+            scanf("%d",&qty);
+            insertFirst(items[item_index].code, items[item_index].name,items[item_index].price,qty);
+            display();
+            break;
+        case 2:
+            display();
+            printf("\nEnter code of item to delete: ");
+            scanf("%d",&code);
+            delete_item(code);
+            display();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            tmp = finalize_bill();
+            if (tmp==-2){
+                break;
+            }
+            print_bill(no_of_items_in_bill,tmp);
+            loop=0;
+            break;
+        case 5:
+            loop=0;
+            break;
+        default:
+            printf("\nInvalid choice try again\n");
+            break;
+        }
+    }
+}
+
+int finalize_bill(){
+    float total_cost=0;
+
+    if (head== NULL){
+        printf("Empty bill");
+        return -2;
+    }
+
+    struct node *temp = head;
+    while (temp->next != NULL){
+        no_of_items_in_bill++;
+        strcpy(bill[no_of_items_in_bill].name,temp->name);
+        bill[no_of_items_in_bill].price=temp->price;
+        bill[no_of_items_in_bill].qty=temp->qty;
+        total_cost += temp->price*temp->qty;
+        temp = temp->next;
+    }
+
+    no_of_items_in_bill++;
+    strcpy(bill[no_of_items_in_bill].name,temp->name);
+    bill[no_of_items_in_bill].price=temp->price;
+    bill[no_of_items_in_bill].qty=temp->qty;
+    total_cost += temp->price*temp->qty;
+    temp = temp->next;    
+
+    return total_cost;
+}
+
+void print_bill(int lenght,float total_cost){
+    printf("\nYour bill is:\n");
+    for (int x=0;x<lenght+1;x++){
+        printf("%s , %d, %d\n",bill[x].name,bill[x].price,bill[x].qty);
+    }
+    printf("Total is: %f\n",total_cost);
+}
+//R5 and R6 ends
