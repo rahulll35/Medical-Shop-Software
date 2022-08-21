@@ -1,9 +1,6 @@
 #include<stdio.h>
 
-void main(){
-
-//R1: Storing item details
-   struct date{
+struct date{
       int day;
       int month;
       int year;
@@ -16,7 +13,13 @@ void main(){
       struct date mfg;
       struct date exp;
    };
-   struct details item[50];
+
+struct details item[50];
+
+void datainput(){
+
+//R1: Storing item details
+   
    int n,i;
    printf("Enter number of items:");
    scanf("%d",&n);
